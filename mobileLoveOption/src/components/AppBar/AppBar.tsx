@@ -12,6 +12,7 @@ export default function AppBar(props: Props) {
   return (
     <HStack
       justifyContent={'space-between'}
+      bgColor="black"
       p={4}
       width={'100%'}>
       {props.goBack === true ? (

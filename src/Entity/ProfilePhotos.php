@@ -18,7 +18,7 @@ class ProfilePhotos
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $path = null;
 
-    #[ORM\ManyToOne(inversedBy: 'profilePhotos')]
+    #[ORM\ManyToOne(inversedBy: 'ProfilePhotos')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Profiles $profile = null;
 

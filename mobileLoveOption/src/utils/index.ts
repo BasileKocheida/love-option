@@ -2,8 +2,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, {AxiosResponse} from 'axios';
 // import * as process from "dotenv";
-
-const baseURL = 'http://192.168.1.77/love-option/public';
+//192.168.1.41
+const baseURL = 'http://192.168.1.41/love-option/public';
 console.log(baseURL, 'baseURL');
 const request = axios.create({
   baseURL: baseURL,
@@ -13,8 +13,17 @@ const request = axios.create({
   },
 });
 
+const requestImg = axios.create({
+  baseURL: baseURL,
+  headers: {
+    accept: 'application/json',
+    'Content-Type': 'multipart/form-data',
+  },
+});
+
 // Export axios as a library for managing API calls.
 export const API = request;
+export const API_IMG = requestImg;
 
 export interface ApiResponseData {}
 

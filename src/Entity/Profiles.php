@@ -46,7 +46,7 @@ class Profiles
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'profile', targetEntity: ProfilePhotos::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'profiles', targetEntity: ProfilePhotos::class, orphanRemoval: true)]
     #[Groups(["user:read", "user:write"])]
     private Collection $profilePhotos;
 
@@ -60,12 +60,15 @@ class Profiles
     private ?Genders $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["user:read", "user:write"])]
     private ?string $biography = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(["user:read", "user:write"])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(["user:read", "user:write"])]
     private ?string $lastname = null;
 
     public function __construct()

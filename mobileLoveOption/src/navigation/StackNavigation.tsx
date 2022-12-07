@@ -14,6 +14,7 @@ import TabNavigator from './TabNavigation';
 import { useDispatch, useSelector } from 'react-redux'
 import ProfileAddInformationsScreen from '../screens/ProfileAddInformationsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ProfileAddPhotosScreen from '../screens/ProfileAddPhotosScreen';
 
 const Stack = createNativeStackNavigator();
 const StackNavigation= () => {
@@ -49,6 +50,10 @@ const StackNavigation= () => {
           <Stack.Screen
             name="ProfileAddInformationsScreen"
             component={ProfileAddInformationsScreen}
+          />
+          <Stack.Screen
+            name="ProfileAddPhotosScreen"
+            component={ProfileAddPhotosScreen}
           />
         </>
       )}
