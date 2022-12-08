@@ -14,8 +14,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ProfilesRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        'get',
-        'post',
+        'get'=>[
+            'normalization_context'=> ['groups'=>[ 'read:profiles:collection']]
+        ],
+        'post' =>[
+            'denormalization_context'=> ['groups'=>['profile:write']]
+        ],
     ],
     itemOperations: [
         'put',
@@ -23,8 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get',
         // recup id user
     ],
-    normalizationContext: ['groups' => 'user:read'],
-    denormalizationContext: ['groups' => 'user:write']
+    normalizationContext: ['groups' => 'profile:read'],
 
     )]
 class Profiles
@@ -32,44 +35,47 @@ class Profiles
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["user:read", "profile:read"])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private ?int $age = null;
 
     #[ORM\Column]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private ?int $phone = null;
 
     #[ORM\OneToOne(inversedBy: 'profiles', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["profile:read", "profile:write", "read:profiles:collection"])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'profiles', targetEntity: ProfilePhotos::class, orphanRemoval: true)]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private Collection $profilePhotos;
 
     #[ORM\ManyToMany(targetEntity: Interests::class)]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private Collection $interests;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["user:read", "user:write"])]
-    private ?Genders $gender = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private ?string $biography = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read", "user:write", "profile:read", "profile:write"])]
     private ?string $lastname = null;
+
+    #[ORM\ManyToOne(cascade:["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["user:read", "profile:write", "profile:read", "read:profiles:collection"])]
+    private ?Genders $genders = null;
 
     public function __construct()
     {
@@ -172,17 +178,6 @@ class Profiles
         return $this;
     }
 
-    public function getGender(): ?Genders
-    {
-        return $this->gender;
-    }
-
-    public function setGender(Genders $gender): self
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
 
     public function getBiography(): ?string
     {
@@ -216,6 +211,18 @@ class Profiles
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getGenders(): ?Genders
+    {
+        return $this->genders;
+    }
+
+    public function setGenders(?Genders $genders): self
+    {
+        $this->genders = $genders;
 
         return $this;
     }

@@ -31,6 +31,12 @@ class UserController extends AbstractController
             '_api_item_operation_name' => 'me',
         ],
     )]
+
+    public function __invoke(Request $request)
+    {
+        return $this->getUser();
+    }
+
     // json response
     public function me(Request $request)
     {

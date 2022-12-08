@@ -7,7 +7,9 @@ use App\Repository\ProfilePhotosRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProfilePhotosRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    
+)]
 class ProfilePhotos
 {
     #[ORM\Id]
